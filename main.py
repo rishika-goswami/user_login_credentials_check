@@ -1,14 +1,7 @@
 from passlib.hash import pbkdf2_sha256
 import hashlib
-'''import db_connection
-
-#db_connection.test()
-
-with open('db_connection.py', 'r') as file:
-    code = file.read()
-    exec(code)
-
-#def test():'''
+import getpass
+from functions import login
 
 import mysql.connector as mysql
 from mysql.connector import connect, Error
@@ -56,22 +49,13 @@ password=[]
 for i in result:
     password.append(i[2])
 
-flag=1
 user=input('Enter your username:')
 
-#print("Valid username!")
-pwd=input('Enter your password:')
+pwd=getpass.getpass('Enter your password:')
 # generate new salt, and hash a password
 hashed_pwd = hashlib.sha256(pwd.encode()).hexdigest()
 
-for i in password:
-    if hashed_pwd==i:
-        print("User logged in successfully!")
-        flag=0
-        break             
-
-if(flag) or user not in username:
-    print("Unsucessful login attempt.\nPlease try again!")
+login(user, hashed_pwd, username, password)
     
 
 # close the cursor and database connection
